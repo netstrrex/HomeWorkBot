@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APP__BOT__TOKEN: ${BOT_TOKEN}
+      APP__POSTGRES__USER: ${POSTGRES_USER}
+      APP__POSTGRES__PASSWORD: ${POSTGRES_PASSWORD}
+      APP__POSTGRES__DB: ${POSTGRES_DB}
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
